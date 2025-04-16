@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import Page from "../../component/Page";
 import "../../static/main.css";
 import OutlineInput from "../../component/OutLineInput";
@@ -8,20 +8,44 @@ import TodoApi from "../../lib/Api/TodoApi";
 const Todo = () => {
     
   const [inputValue, setInputValue] = useState("");
-  const [toDoList] = useState([
-    { id: 1, content: "todo내용1" },
-    { id: 2, content: "todo내용2" },
-    { id: 3, content: "todo내용3" },
+  const [toDoList,setToDoList] = useState([
+    { todoId: 1, content: "todo내용1" ,isComplete: false},
+    { todoId: 2, content: "todo내용2" ,isComplete: true},
+    { todoId: 3, content: "todo내용3" ,isComplete: true },
   ]);
  
   const data =async()=>{
-    await TodoApi.GetTodoList()
+    //await TodoApi.GetTodoList()
+    await TodoApi.SaveTodo(toDoList);
   }
-    data();  
+  const addToDo = () => {
+
+    if (inputValue.trim()) {
+      setToDoList((current) => 
+        [...current, {todoId: 4, content: inputValue, isComplete: false}]
+      );
+      setInputValue('');
+       
+    }
+    data(); 
+  };
+ useEffect(() => {
+  console.log("업데이트된 toDoList:", toDoList);
+}, [toDoList]);  // toDoList가 변경될 때마다 useEffect가 실행됨
+ 
+       
   const handleChange = (event) => {
     setInputValue(event.target.value);
   };
-
+  const toggleComplete = (id) => {
+    console.log("id",id);
+    setToDoList((current) => current.map((toDo) => {
+      if (toDo.todoId === id) {
+        return { ...toDo, isComplete: !toDo.isComplete };
+      }
+      return toDo;
+    }));
+  };
   
   return (
     <Page header={<h1>header</h1>}>
@@ -34,16 +58,16 @@ const Todo = () => {
             value={inputValue}
             onChange={handleChange}
           />
-          <PrimaryButton />
+          <PrimaryButton onClick={addToDo} />
         </div>
 
         <div className="app-list">
         {toDoList.map((toDo, index) =>
           <ToDo
-            key={index}
-            isComplete={true}
+            key={toDo.todoId}
+            isComplete={toDo.isComplete}
             value={toDo.content}
-            onClick={() => {}}
+            onClick={() => toggleComplete(toDo.todoId)}
           />
         )}
         </div>

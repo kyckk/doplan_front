@@ -10,7 +10,7 @@ const ToDo = ({
         onClick={onClick}
       >
         {/* isComplete이 true일때만 ✔️ 이모티콘 출력 */}
-        {/* <p>{isComplete && <span>&#10004;</span>}</p> */}
+        <p>{isComplete && <span>&#10004;</span>}</p>
         <p>{value}</p>
       </div>
     )

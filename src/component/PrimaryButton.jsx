@@ -1,8 +1,8 @@
 import "../static/main.css"
-const PrimaryButtonry = ( ) => {
+const PrimaryButtonry = ({onClick} ) => {
     return (
        
-        <button className="primary-button">+</button>
+        <button  onClick={onClick} className="primary-button">+</button>
     )
 }
 

@@ -32,6 +32,9 @@
     border-radius: 5px;
     padding: 40px;
   }
+  .app>*{
+    margin-bottom: 10px;
+  }
   
   
   
@@ -91,6 +94,7 @@
   }
   
   .to-do {
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     height: 50px;
