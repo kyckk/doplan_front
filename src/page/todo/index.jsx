@@ -10,45 +10,67 @@ import Dialog from "../../component/Dialog";
 const Todo = () => {
   const [inputValue, setInputValue] = useState("");
   const [toDoList, setToDoList] = useState([
-    { todoId: 1, content: "todo내용1", isComplete: false },
-    { todoId: 2, content: "todo내용2", isComplete: true },
-    { todoId: 3, content: "todo내용3", isComplete: true },
+    { todoId: "", content: "", completed: false },
   ]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentSeq, setCurrentSeq] = useState(null);
   const data = async () => {
-    //await TodoApi.GetTodoList()
-    await TodoApi.SaveTodo(toDoList);
+    console.log("저장~~~~~~~~~~toDoList", toDoList);  
+   
+    try {
+      await TodoApi.SaveTodo(toDoList);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+   
   };
   const addToDo = () => {
     if (inputValue.trim()) {
       setToDoList((current) => [
         ...current,
-        { todoId: 4, content: inputValue, isComplete: false },
+        { todoId: "", content: inputValue, completed: false },
       ]);
       setInputValue("");
     }
-    data();
   };
   useEffect(() => {
-    console.log("업데이트된 toDoList:", toDoList);
-  }, [toDoList]); // toDoList가 변경될 때마다 useEffect가 실행됨
-
+    const fetchData = async () => {
+      let array = [];
+      try {
+        array = await TodoApi.GetTodoList();
+        console.log(array);
+        array.forEach(element => {
+          if(element.completed ===true){
+            toggleComplete(element.todoId)
+          }
+        })
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setToDoList(array)
+      }
+      
+    }; 
+    fetchData();
+  }, []);
+ 
   const handleChange = (event) => {
     setInputValue(event.target.value);
   };
   const toggleComplete = (id) => {
-    console.log("id", id);
     setToDoList((current) =>
       current.map((toDo) => {
         if (toDo.todoId === id) {
-          return { ...toDo, isComplete: !toDo.isComplete };
+          console.log("toDotodoId", toDo.todoId);
+          console.log("id", id);
+          return { ...toDo, completed: !toDo.completed };
         }
         return toDo;
       })
     );
+    console.log("-----settoDoList", toDoList);
   };
-  const isUncompletedToDo = (toDo) => !toDo.isComplete;
+  const isUncompletedToDo = (toDo) => !toDo.completed;
 
   const getUncompletedToDoList = () => toDoList.filter(isUncompletedToDo);
 
@@ -67,6 +89,8 @@ const Todo = () => {
             value={inputValue}
             onChange={handleChange}
           />
+          
+          <button className="primary-button" onClick={data} style={{background:"black"}}>저장</button>
           <PrimaryButton onClick={addToDo} />
         </div>
 
@@ -81,7 +105,7 @@ const Todo = () => {
             >
               <ToDo
                 key={toDo.todoId}
-                isComplete={toDo.isComplete}
+                completed={toDo.completed}
                 value={toDo.content}
                 onClick={() => toggleComplete(toDo.todoId)}
               />
