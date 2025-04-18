@@ -2,15 +2,15 @@
 
 ## 1. 프로젝트 소개
 
-이 리포지토리는 **ToDo 애플리케이션의 프론트엔드**입니다.  
-React.js (v18)를 기반으로 CRA(Create React App)로 개발되었으며,  
+이 리포지토리는 **ToDo및calendar 애플리케이션의 프론트엔드**입니다.  
+React.js (v19)를 기반으로 CRA(Create React App)로 개발되었으며,  
 REST API를 통해 Spring Boot 백엔드와 통신합니다.
 
 ### 주요 기능
 
 - 할 일 목록 조회 / 추가 / 완료 처리 / 삭제
 - 라우팅 구현 (`react-router-dom` 활용)
-- 캘린더 기능 구현
+- calendar 기능 구현
 - `fetch` API를 활용한 백엔드 연동
 
 ---
@@ -40,7 +40,7 @@ npm start
 ├── public
 ├── src
 │   ├── components       # 공통 컴포넌트
-│   ├── pages            # 메인 페이지들
+│   ├── pages            # 메인 페이지들 (todo및 calendar)
 │   ├── lib              # fetch API 함수 정의
 │   ├── static           # 디자인 리소스
 │   └── index.js
@@ -63,4 +63,4 @@ const GetTodoList = async () => {
 };
 5. 추가 구현 기능
 ✅ 완료된 할 일과 남은 할 일 구분하여 UI 분리
-✅ 캘린더 완료된 날짜에 체크 
+✅ calendar 완료된 날짜에 체크 
