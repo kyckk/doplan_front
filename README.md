@@ -40,25 +40,19 @@ npm install
 npm start
 기본 개발 서버 주소는: http://localhost:3000
 
-3. 폴더 구조
-bash
-복사
-편집
+## 2. 실행 방법
+
 📦 doplan_front
 ├── public
 ├── src
 │   ├── components       # 공통 컴포넌트
 │   ├── pages            # 메인 페이지들
-│   ├── services         # fetch API 함수 정의
-│   ├── App.js
+│   ├── lib         # fetch API 함수 정의
+│   ├── static      # 디자인
 │   └── index.js
 ├── package.json
 └── README.md
-4. fetch 사용 예시
-js
-복사
-편집
-// services/todoService.js
+##4. fetch 사용 예시
 const GetTodoList = async () => {
   let data=[];
   try {
@@ -70,7 +64,7 @@ const GetTodoList = async () => {
     console.error("Error fetching todo list:", error);
   }
 
-5. 추가 기능
+##5. 추가 기능
 ✅ 완료처리된 일과 할일 분리
 
 ✅ 캘린더 완료된 날짜에 체크표시 
