@@ -1,7 +1,3 @@
-✅ 1. frontend/README.md (React, CRA, fetch 사용)
-markdown
-복사
-편집
 # 📌 ToDo App - Frontend (React.js)
 
 ## 1. 프로젝트 소개
@@ -12,10 +8,10 @@ REST API를 통해 Spring Boot 백엔드와 통신합니다.
 
 ### 주요 기능
 
-- 할 일 목록 조회 / 추가 /완료 처리 삭제 
-- 라우팅 (react-router-dom활용)
-- 캘린더 구현
-- fetch API를 활용한 백엔드 연동
+- 할 일 목록 조회 / 추가 / 완료 처리 / 삭제
+- 라우팅 구현 (`react-router-dom` 활용)
+- 캘린더 기능 구현
+- `fetch` API를 활용한 백엔드 연동
 
 ---
 
@@ -32,42 +28,39 @@ REST API를 통해 Spring Boot 백엔드와 통신합니다.
 # 1. 프로젝트 클론
 git clone https://github.com/kyckk/doplan_front.git
 
-
 # 2. 패키지 설치
 npm install
 
 # 3. 개발 서버 실행
 npm start
-기본 개발 서버 주소는: http://localhost:3000
+기본 개발 서버 주소: http://localhost:3000
 
-## 2. 실행 방법
-
+3. 폴더 구조
 📦 doplan_front
 ├── public
 ├── src
 │   ├── components       # 공통 컴포넌트
 │   ├── pages            # 메인 페이지들
-│   ├── lib         # fetch API 함수 정의
-│   ├── static      # 디자인
+│   ├── lib              # fetch API 함수 정의
+│   ├── static           # 디자인 리소스
 │   └── index.js
 ├── package.json
 └── README.md
-##4. fetch 사용 예시
+
+4. fetch 사용 예시
+// lib/todoApi.js
 const GetTodoList = async () => {
-  let data=[];
+  let data = [];
   try {
     const response = await fetch("http://localhost:8080/todoList", {
       method: "GET",
     });
-     data = await response.json();
+    data = await response.json();
   } catch (error) {
     console.error("Error fetching todo list:", error);
   }
-
-##5. 추가 기능
-✅ 완료처리된 일과 할일 분리
-
-✅ 캘린더 완료된 날짜에 체크표시 
-
-
-
+  return data;
+};
+5. 추가 구현 기능
+✅ 완료된 할 일과 남은 할 일 구분하여 UI 분리
+✅ 캘린더 완료된 날짜에 체크 
