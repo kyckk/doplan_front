@@ -1,78 +1,163 @@
-// Calendar.js
-import React, { useState } from "react";
-import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, format, isSameMonth, isSameDay } from "date-fns";
+import React, { useState, useEffect } from "react";
+import { Icon } from "@iconify/react";
+import { format, addMonths, subMonths } from "date-fns";
+import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from "date-fns";
+import { isSameMonth, isSameDay, addDays, parse } from "date-fns";
+import "../../static/calendar.css";
+import "../../static/main.css";
+import Page from "../../component/Page";
+import TodoApi from "../../lib/Api/TodoApi";
 
-const Calendar = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const renderHeader = () => (
-    <div className="header">
-      <button onClick={() => setCurrentMonth(prev => addDays(prev, -30))}>◀</button>
-      <span>{format(currentMonth, "yyyy년 MM월")}</span>
-      <button onClick={() => setCurrentMonth(prev => addDays(prev, 30))}>▶</button>
-    </div>
-  );
-
-  const renderDays = () => {
-    const days = [];
-    const date = new Date();
-    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div className="col" key={i}>
-          {dayNames[i]}
-        </div>
-      );
-    }
-    return <div className="days row">{days}</div>;
-  };
-
-  const renderCells = () => {
-    const monthStart = startOfMonth(currentMonth);
-    const monthEnd = endOfMonth(monthStart);
-    const startDate = startOfWeek(monthStart, { weekStartsOn: 0 });
-    const endDate = endOfWeek(monthEnd, { weekStartsOn: 0 });
-
-    const rows = [];
-    let days = [];
-    let day = startDate;
-
-    while (day <= endDate) {
-      for (let i = 0; i < 7; i++) {
-        const cloneDay = day;
-        days.push(
-          <div
-            className={`col cell ${
-              !isSameMonth(day, monthStart) ? "disabled" : isSameDay(day, selectedDate) ? "selected" : ""
-            }`}
-            key={day}
-            onClick={() => setSelectedDate(cloneDay)}
-          >
-            <span>{format(day, "d")}</span>
-          </div>
-        );
-        day = addDays(day, 1);
-      }
-      rows.push(
-        <div className="row" key={day}>
-          {days}
-        </div>
-      );
-      days = [];
-    }
-
-    return <div className="body">{rows}</div>;
-  };
-
+const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
   return (
-    <div className="calendar">
-      {renderHeader()}
-      {renderDays()}
-      {renderCells()}
+    <div className="header row">
+      <span class="fluent-mdl2--completed"></span>
+      <div className="col col-start">
+        <span className="text">
+          <span className="text month">{format(currentMonth, "M")}월</span>
+          {format(currentMonth, "yyyy")}
+        </span>
+      </div>
+      <div className="col col-end">
+        <Icon icon="bi:arrow-left-circle-fill" onClick={prevMonth} />
+        <Icon icon="bi:arrow-right-circle-fill" onClick={nextMonth} />
+      </div>
     </div>
   );
 };
 
-export default Calendar;
+const RenderDays = () => {
+  const days = [];
+  const date = ["Sun", "Mon", "Thu", "Wed", "Thrs", "Fri", "Sat"];
+
+  for (let i = 0; i < 7; i++) {
+    days.push(
+      <div className="col" key={i}>
+        {date[i]}
+      </div>
+    );
+  }
+
+  return <div className="days row">{days}</div>;
+};
+
+const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
+  const [toDoList, setToDoList] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      let array = [];
+      try {
+        array = await TodoApi.GetTodoList();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setToDoList(array);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const monthStart = startOfMonth(currentMonth);
+  const monthEnd = endOfMonth(monthStart);
+  const startDate = startOfWeek(monthStart);
+  const endDate = endOfWeek(monthEnd);
+  console.log(toDoList);
+  const rows = [];
+  let days = [];
+  let day = startDate;
+  console.log("day", day);
+
+  console.log("date", format(startDate, "yyyy/M/d"));
+  let formattedDate = "";
+
+  while (day <= endDate) {
+    for (let i = 0; i < 7; i++) {
+      formattedDate = format(day, "d");
+      // console.log("formattedDate", formattedDate);
+      // console.log("day", day);
+      // console.log("currentMonth,day"+format(currentMonth, "M"),format(day, "M"))
+      const cloneDay = day;
+      days.push(
+        <div
+          className={`col cell ${
+            !isSameMonth(day, monthStart)
+              ? "disabled"
+              : isSameDay(day, selectedDate)
+              ? "selected"
+              : format(currentMonth, "M") !== format(day, "M")
+              ? "not-valid"
+              : "valid"
+          }`}
+          key={day}
+          onClick={() => onDateClick(parse(cloneDay))}
+        >
+          <span
+            className={
+              format(currentMonth, "M") !== format(day, "M")
+                ? "text not-valid"
+                : ""
+            }
+          >
+            {/* {format(day, 'yyyy/M/d')} */}
+            {formattedDate}
+          </span>
+          {toDoList.some(
+            (toDo) =>
+              format(new Date(toDo.updatedAt), "yyyy/M/d") ===
+                format(day, "yyyy/M/d") && toDo.completed === true
+          )&& <Icon
+          style={{ margin: "4px 0 0 14px" }}
+          icon="mdi:check-circle"
+          width="32"
+          height="18"
+        />}
+         
+        </div>
+      );
+      day = addDays(day, 1);
+    }
+    rows.push(
+      <div className="row" key={day}>
+        {days}
+      </div>
+    );
+    days = [];
+  }
+  return <div className="body">{rows}</div>;
+};
+
+const Calender = () => {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  console.log(selectedDate);
+  const prevMonth = () => {
+    setCurrentMonth(subMonths(currentMonth, 1));
+  };
+  const nextMonth = () => {
+    setCurrentMonth(addMonths(currentMonth, 1));
+  };
+  const onDateClick = (day) => {
+    setSelectedDate(day);
+  };
+  return (
+    <Page header={<h1>header</h1>}>
+      <div className="app">
+        <div className="calendar">
+          <RenderHeader
+            currentMonth={currentMonth}
+            prevMonth={prevMonth}
+            nextMonth={nextMonth}
+          />
+          <RenderDays />
+          <RenderCells
+            currentMonth={currentMonth}
+            selectedDate={selectedDate}
+            onDateClick={onDateClick}
+          />
+        </div>
+      </div>
+    </Page>
+  );
+};
+
+export default Calender;

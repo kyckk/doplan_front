@@ -38,7 +38,6 @@ const Todo = () => {
       let array = [];
       try {
         array = await TodoApi.GetTodoList();
-        console.log(array);
         array.forEach(element => {
           if(element.completed ===true){
             toggleComplete(element.todoId)
@@ -61,14 +60,12 @@ const Todo = () => {
     setToDoList((current) =>
       current.map((toDo) => {
         if (toDo.todoId === id) {
-          console.log("toDotodoId", toDo.todoId);
-          console.log("id", id);
           return { ...toDo, completed: !toDo.completed };
         }
         return toDo;
       })
     );
-    console.log("-----settoDoList", toDoList);
+    
   };
   const isUncompletedToDo = (toDo) => !toDo.completed;
 
