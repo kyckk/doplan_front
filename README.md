@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+# 📌 ToDo App - Frontend (React.js)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1. 프로젝트 소개
 
-## Available Scripts
+이 리포지토리는 **ToDo및calendar 애플리케이션의 프론트엔드**입니다.  
+React.js (v19)를 기반으로 CRA(Create React App)로 개발되었으며,  
+REST API를 통해 Spring Boot 백엔드와 통신합니다.
 
-In the project directory, you can run:
+### 주요 기능
 
-### `npm start`
+- 할 일 목록 조회 / 추가 / 완료 처리 / 삭제
+- 라우팅 구현 (`react-router-dom` 활용)
+- calendar 기능 구현
+- `fetch` API를 활용한 백엔드 연동
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 2. 실행 방법
 
-### `npm test`
+### 필수 조건
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js (v16 이상)
+- npm 또는 yarn
 
-### `npm run build`
+### 설치 및 실행
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+# 1. 프로젝트 클론
+git clone https://github.com/kyckk/doplan_front.git
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# 2. 패키지 설치
+npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# 3. 개발 서버 실행
+npm start
+기본 개발 서버 주소: http://localhost:3000
 
-### `npm run eject`
+3. 폴더 구조
+📦 doplan_front
+├── public
+├── src
+│   ├── components       # 공통 컴포넌트
+│   ├── pages            # 메인 페이지들 (todo및 calendar)
+│   ├── lib              # fetch API 함수 정의
+│   ├── static           # 디자인 리소스
+│   └── index.js
+├── package.json
+└── README.md
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+4. fetch 사용 예시
+// lib/todoApi.js
+const GetTodoList = async () => {
+  let data = [];
+  try {
+    const response = await fetch("http://localhost:8080/todoList", {
+      method: "GET",
+    });
+    data = await response.json();
+  } catch (error) {
+    console.error("Error fetching todo list:", error);
+  }
+  return data;
+};
+5. 추가 구현 기능
+✅ 완료된 할 일과 남은 할 일 구분하여 UI 분리
+✅ calendar 완료된 날짜에 체크 
