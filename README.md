@@ -62,5 +62,4 @@ const GetTodoList = async () => {
   return data;
 };
 5. 추가 구현 기능
-✅ 완료된 할 일과 남은 할 일 구분하여 UI 분리
-✅ calendar 완료된 날짜에 체크 
+✅ calendar 완료된 처리된일을 수정 날짜에 체크 
