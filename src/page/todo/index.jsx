@@ -7,6 +7,7 @@ import ToDo from "../../component/Todo";
 import TodoApi from "../../lib/Api/TodoApi";
 import TextButton from "../../component/TextButton";
 import Dialog from "../../component/Dialog";
+import { format} from "date-fns";
 const Todo = () => {
   const [inputValue, setInputValue] = useState("");
   const [toDoList, setToDoList] = useState([
@@ -14,11 +15,13 @@ const Todo = () => {
   ]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentSeq, setCurrentSeq] = useState(null);
-  const data = async () => {
+  const data = async (list) => {
     console.log("저장~~~~~~~~~~toDoList", toDoList);  
-   
+    if(list === null){
+      list = toDoList;
+    }
     try {
-      await TodoApi.SaveTodo(toDoList);
+      await TodoApi.SaveTodo(list);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -36,17 +39,20 @@ const Todo = () => {
   useEffect(() => {
     const fetchData = async () => {
       let array = [];
+      let filterArray =[];
       try {
         array = await TodoApi.GetTodoList();
-        array.forEach(element => {
-          if(element.completed ===true){
-            toggleComplete(element.todoId)
-          }
-        })
+        filterArray =array.filter((element) => element.completed === false)
+        console.log("array", filterArray);  
+        // array.forEach(element => {
+        //   if(element.completed ===true){
+        //     toggleComplete(element.todoId)
+        //   }
+        // })
       } catch (e) {
         console.error(e);
       } finally {
-        setToDoList(array)
+        setToDoList(filterArray)
       }
       
     }; 
@@ -72,6 +78,13 @@ const Todo = () => {
   const getUncompletedToDoList = () => toDoList.filter(isUncompletedToDo);
 
   const removeAllCompletedToDo = () => {
+    
+    const updateList=toDoList.filter((todo)=> todo.completed === true).map((todo) => {
+      return { ...todo, updatedAt: format( new Date(), "yyyy-MM-d") };  
+    })
+    console.log("삭제할 목록", updateList);
+    console.log("현재시간간",format( new Date(), "yyyy-MM-d"));
+    data(updateList);  
     setToDoList((current) => current.filter(isUncompletedToDo));
   };
   

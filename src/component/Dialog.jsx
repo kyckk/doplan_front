@@ -1,7 +1,6 @@
 import "../static/main.css";
 import { useState } from "react";
 const Dialog = ({ open,state, onClose ,sqeunce}) => {
-    console.log("sqeunce",sqeunce)
     const [inputValue, setInputValue] = useState("");
     const handleChange= (e) => {
         setInputValue(e.target.value);

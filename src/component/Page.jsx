@@ -1,9 +1,10 @@
 import React from "react";
+import Navbar from "./Navbar";
 
-const Page = ({ header, children }) => {
+const Page = ({  children }) => {
   return (
     <div>
-      {header}
+      <Navbar/>
       {children}
     </div>
   );
