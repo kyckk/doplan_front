@@ -8,11 +8,19 @@ REST API를 통해 Spring Boot 백엔드와 통신합니다.
 
 ### 주요 기능
 
-- 할 일 목록 조회 / 추가 / 완료 처리 / 삭제
-- 라우팅 구현 (`react-router-dom` 활용)
-- calendar 기능 구현
-- `fetch` API를 활용한 백엔드 연동
+할 일 목록
+→ 할 일 조회 (첫 페이지)
+→ 추가 (+ 버튼 클릭이후 저장버튼 클락해야 db에저장)
+→ 완료 처리 / 삭제 (완료삭제 버튼 클릭)
+→ 수정 처리 (연필모양 클릭 이후 저장 버튼 클릭해야 db에저장  )  
+라우팅 구현 (react-router-dom 활용)
+→ react-router-dom 활용 (예: /, /calendar)
 
+Calendar 기능 구현
+→ 달력 기반 UI 구현 및 date-fns 활용
+
+백앤드 연동
+→ fetch Api활용
 ---
 
 ## 2. 실행 방법
