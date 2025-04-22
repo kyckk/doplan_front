@@ -18,7 +18,9 @@ REST API를 통해 Spring Boot 백엔드와 통신합니다.
 
 → 라우팅 구현  (react-router-dom 활용  (예: /, /calendar))
 
-→ Calendar 기능 구현 ,달력 기반 UI 구현 및 date-fns 활용
+→ Calendar 기능 구현 ,달력 기반 UI 구현 및 date-fns 활용 
+
+→ Calendar 완료날짜 클릭시 해당 날짜기준으로 완료목록 다이얼로그로 구현  
 
 백앤드 연동
 → fetch Api활용
