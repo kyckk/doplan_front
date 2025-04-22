@@ -26,12 +26,12 @@ const TodoText = ({ open, onClose, sqeunce }) => {
     <div className="BackDrop">
       
   <div className=" Dialog" style={{flexDirection: "column", width:"500px" }}>
-    <h1 style={{margin: "10px",marginBottom:"20px",textAlign:"center"}}>완료목록</h1>
+    <h1 style={{textAlign:"center",margin: "auto"}}>완료목록</h1>
     {Array.isArray(updateList) && updateList.length > 0 ? (
       updateList.map((item) => (
         <li key={item.todoId} className="update-list">
           <Icon
-                    style={{ margin: "4px 0 0 14px" }}
+                    
                     icon="mdi:check-circle"
                     width="32"
                     height="18"
