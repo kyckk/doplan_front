@@ -7,6 +7,7 @@ import "../../static/calendar.css";
 import "../../static/main.css";
 import Page from "../../component/Page";
 import TodoApi from "../../lib/Api/TodoApi";
+import TodoText from "../../component/TodoText";
 
 const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
   return (
@@ -42,6 +43,9 @@ const RenderDays = () => {
 };
 
 const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentSeq, setCurrentSeq] = useState(null);
+  
   const [toDoList, setToDoList] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +93,12 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
               : "valid"
           }`}
           key={day}
-          onClick={() => onDateClick(parse(cloneDay))}
+          onClick={() => {
+            onDateClick(parse(cloneDay));
+            setIsOpen(true);
+            setCurrentSeq(format(cloneDay, "yyyy/M/d"));
+          }}
+       
         >
           <span
             className={
@@ -123,10 +132,12 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
     );
     days = [];
   }
-  return <div className="body">{rows}</div>;
+  return <div className="body">{rows} <TodoText open={isOpen} sqeunce={currentSeq}  onClose={() => setIsOpen(false)}/></div>;
 };
 
 const Calender = () => {
+
+    
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   console.log(selectedDate);
@@ -156,6 +167,7 @@ const Calender = () => {
           />
         </div>
       </div>
+     
     </Page>
   );
 };

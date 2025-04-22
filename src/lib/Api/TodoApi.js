@@ -13,6 +13,29 @@ const GetTodoList = async () => {
 
   return data;
 };
+const selectTodoList = async (UpdateDate) => {
+  console.log("~~~~~~~~~~~~~~~~UpdateDate",UpdateDate)      
+  let data=[];
+  try {
+    const response = await fetch("http://localhost:8080/selectTodoList", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // 서버에 JSON을 보낼 때 명시
+      },
+      body: JSON.stringify(UpdateDate),
+    });
+     data = await response.json();
+    console.log("todo에서 조회 목록 =~~~~~~");
+     console.log(data);
+  } catch (error) {
+    console.error("Error fetching todo list:", error);
+  }
+
+  return data;
+};
+
+
+
 const SaveTodo = async (toDoList) => {
   console.log("------------------------toDoList", toDoList);
   try {
@@ -53,5 +76,6 @@ const TodoApi = {
   GetTodoList: GetTodoList,
   SaveTodo: SaveTodo,
   updateTodo: updateTodo,
+  selectTodoList: selectTodoList,
 };
 export default TodoApi;
