@@ -28,6 +28,11 @@ const Todo = () => {
    
   };
   const addToDo = () => {
+    
+    if (inputValue === "") {  
+      alert("내용을 입력하세요.");
+      return;
+    }
     if (inputValue.trim()) {
       setToDoList((current) => [
         ...current,
@@ -78,7 +83,10 @@ const Todo = () => {
   const getUncompletedToDoList = () => toDoList.filter(isUncompletedToDo);
 
   const removeAllCompletedToDo = () => {
-    
+    if(toDoList.filter((toDo) => toDo.completed).length === 0) {
+      alert("삭제할 목록이 없습니다.");
+      return;
+    };
     const updateList=toDoList.filter((todo)=> todo.completed === true).map((todo) => {
       return { ...todo, updatedAt: format( new Date(), "yyyy-MM-d") };  
     })

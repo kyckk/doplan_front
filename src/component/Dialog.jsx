@@ -8,6 +8,10 @@ const Dialog = ({ open,state, onClose ,sqeunce}) => {
     };
     const state1 = (value) => { 
         console.log(sqeunce)
+        if(inputValue === ""){
+            alert("수정 할 내용을 입력하세요.")
+            return;
+        }
         state((current) =>
             
             current.map((toDo) => {
@@ -18,6 +22,7 @@ const Dialog = ({ open,state, onClose ,sqeunce}) => {
                     return toDo;
             })
           );
+        onClose();  
       }
     
   if (!open) return null;
