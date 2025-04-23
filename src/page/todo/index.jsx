@@ -11,17 +11,15 @@ import { format} from "date-fns";
 const Todo = () => {
   const [inputValue, setInputValue] = useState("");
   const [toDoList, setToDoList] = useState([
-    { todoId: "", content: "", completed: false },
+    { todoId: "", content: "", updatedAt:"",createdAt:"", completed: false },
   ]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentSeq, setCurrentSeq] = useState(null);
-  const data = async (list) => {
-    console.log("저장~~~~~~~~~~toDoList", toDoList);  
-    if(list === null){
-      list = toDoList;
-    }
+  const data = async () => {
+    console.log("저장1~~~~~~~~~~toDoList", toDoList);  
+    
     try {
-      await TodoApi.SaveTodo(list);
+      await TodoApi.SaveTodo(toDoList);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -36,7 +34,7 @@ const Todo = () => {
     if (inputValue.trim()) {
       setToDoList((current) => [
         ...current,
-        { todoId: "", content: inputValue, completed: false },
+        { todoId: "",updatedAt:"",createdAt:"", content: inputValue, completed: false },
       ]);
       setInputValue("");
     }
@@ -91,8 +89,10 @@ const Todo = () => {
       return { ...todo, updatedAt: format( new Date(), "yyyy-MM-d") };  
     })
     console.log("삭제할 목록", updateList);
-    console.log("현재시간간",format( new Date(), "yyyy-MM-d"));
-    data(updateList);  
+    
+   
+    console.log("삭제할 목록", toDoList);
+    data()
     setToDoList((current) => current.filter(isUncompletedToDo));
   };
   
