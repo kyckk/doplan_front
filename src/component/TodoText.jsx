@@ -28,7 +28,7 @@ const TodoText = ({ open, onClose, sqeunce }) => {
   <div className=" Dialog" style={{flexDirection: "column", width:"500px" }}>
     <h1 style={{textAlign:"center",margin: "auto"}}>완료목록</h1>
     {Array.isArray(updateList) && updateList.length > 0 ? (
-      updateList.map((item) => (
+      updateList.slice(0, 5).map((item) => (
         <li key={item.todoId} className="update-list">
           <Icon
                     
@@ -39,7 +39,7 @@ const TodoText = ({ open, onClose, sqeunce }) => {
         </li>
       ))
     ) : (
-      <p>업데이트가 없습니다.</p>  // 업데이트가 없다는 메시지
+      <p>완룍목록이 없습니다다.</p>  // 업데이트가 없다는 메시지
     )}
     <button onClick={onClose}>닫기</button>
   </div>
